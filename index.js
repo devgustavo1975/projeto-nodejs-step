@@ -5,11 +5,7 @@ const produtos = [
   'Notebook',
   'Mouse',
   'Teclado',
-  'Monitor',
-  'Impressora',
-  'Cadeira Gamer',
-  'Mesa para Computador',
-  'Headset',
+  'Monitor'
 ];
 
 const server = http.createServer((req, res) => {
@@ -23,10 +19,10 @@ const server = http.createServer((req, res) => {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Gustavo Tecnologia</title>
+      <title>Aplicação Node.js</title>
     </head>
     <body>
-      <h1>Produtos</h1>
+      <h1>Lista de Produtos</h1>
 
       <ul>
         ${listaProdutos}
@@ -42,4 +38,5 @@ const server = http.createServer((req, res) => {
 server.listen(3000, () => {
   console.log('Servidor rodando em http://localhost:3000');
 });
+    
     
