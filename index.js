@@ -1,42 +1,83 @@
 
-const http = require('http');
+const express = require('express');
+
+const app = express();
+
+app.use(express.json());
 
 const produtos = [
-  'Notebook',
-  'Mouse',
-  'Teclado',
-  'Monitor'
+  {
+    id: 1,
+    nome: 'Notebook'
+  },
+  {
+    id: 2,
+    nome: 'Mouse'
+  }
 ];
 
-const server = http.createServer((req, res) => {
-  const listaProdutos = produtos
-    .map((produto) => `<li>${produto}</li>`)
-    .join('');
-
-  const html = `
-    <!DOCTYPE html>
-    <html lang="pt-br">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Aplicação Node.js</title>
-    </head>
-    <body>
-      <h1>Lista de Produtos</h1>
-
-      <ul>
-        ${listaProdutos}
-      </ul>
-    </body>
-    </html>
-  `;
-
-  res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-  res.end(html);
+app.get('/', (req, res) => {
+  res.send('API funcionando');
 });
 
-server.listen(3000, () => {
+app.get('/produtos', (req, res) => {
+
+  res.json(produtos);
+});
+
+app.post('/produtos', (req, res) => {
+
+  const novoProduto = req.body;
+
+  produtos.push(novoProduto);
+
+  res.status(201).json({
+    mensagem: 'Produto criado',
+    produto: novoProduto
+  });
+});
+
+app.listen(3000, () => {
   console.log('Servidor rodando em http://localhost:3000');
 });
-    
-    
+
+app.delete('/produtos/:id', (req, res) => {
+
+  const id = Number(req.params.id);
+
+  const indiceProduto = produtos.findIndex(
+    (produto) => produto.id === id
+  );
+
+  if (indiceProduto === -1) {
+
+    return res.status(404).json({
+      mensagem: 'Produto não encontrado'
+    });
+  }
+
+  produtos.splice(indiceProduto, 1);
+
+  res.json({
+    mensagem: 'Produto removido'
+  });
+
+});
+
+app.get('/produtos/:id', (req, res) => {
+
+  const id = Number(req.params.id);
+
+  const indiceProduto = produtos.findIndex(
+    (produto) => produto.id === id
+  );
+
+  if (indiceProduto === -1) {
+    return res.status(404).json({
+      mensagem: 'Produto não encontrado'
+    });
+  }
+
+  res.json(produtos[indiceProduto]);
+
+  });

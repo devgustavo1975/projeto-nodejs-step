@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -18,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/devgustavo1975/projeto-nodejs-step/issues"
   },
-  "homepage": "https://github.com/devgustavo1975/projeto-nodejs-step#readme"
+  "homepage": "https://github.com/devgustavo1975/projeto-nodejs-step#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
