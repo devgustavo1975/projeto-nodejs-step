@@ -1,83 +1,58 @@
-
 const express = require('express');
 
 const app = express();
 
 app.use(express.json());
 
-const produtos = [
+let usuarios = [
   {
     id: 1,
-    nome: 'Notebook'
+    nome: 'João',
+    email: 'joao@email.com'
   },
   {
     id: 2,
-    nome: 'Mouse'
+    nome: 'Maria',
+    email: 'maria@email.com'
   }
 ];
 
-app.get('/', (req, res) => {
-  res.send('API funcionando');
+// GET - Listar usuários
+app.get('/usuarios', (req, res) => {
+  res.json(usuarios);
 });
 
-app.get('/produtos', (req, res) => {
+// POST - Adicionar usuário
+app.post('/usuarios', (req, res) => {
 
-  res.json(produtos);
-});
+  const { id, nome, email } = req.body;
 
-app.post('/produtos', (req, res) => {
+  const novoUsuario = {
+    id,
+    nome,
+    email
+  };
 
-  const novoProduto = req.body;
-
-  produtos.push(novoProduto);
+  usuarios.push(novoUsuario);
 
   res.status(201).json({
-    mensagem: 'Produto criado',
-    produto: novoProduto
+    mensagem: 'Usuário adicionado com sucesso',
+    usuario: novoUsuario
+  });
+});
+
+// DELETE - Remover usuário
+app.delete('/usuarios/:id', (req, res) => {
+
+  const id = parseInt(req.params.id);
+
+  usuarios = usuarios.filter(usuario => usuario.id !== id);
+
+  res.json({
+    mensagem: 'Usuário removido com sucesso'
   });
 });
 
 app.listen(3000, () => {
-  console.log('Servidor rodando em http://localhost:3000');
+  console.log('Servidor rodando na porta 3000');
 });
-
-app.delete('/produtos/:id', (req, res) => {
-
-  const id = Number(req.params.id);
-
-  const indiceProduto = produtos.findIndex(
-    (produto) => produto.id === id
-  );
-
-  if (indiceProduto === -1) {
-
-    return res.status(404).json({
-      mensagem: 'Produto não encontrado'
-    });
-  }
-
-  produtos.splice(indiceProduto, 1);
-
-  res.json({
-    mensagem: 'Produto removido'
-  });
-
-});
-
-app.get('/produtos/:id', (req, res) => {
-
-  const id = Number(req.params.id);
-
-  const indiceProduto = produtos.findIndex(
-    (produto) => produto.id === id
-  );
-
-  if (indiceProduto === -1) {
-    return res.status(404).json({
-      mensagem: 'Produto não encontrado'
-    });
-  }
-
-  res.json(produtos[indiceProduto]);
-
-  });
