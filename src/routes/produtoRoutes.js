@@ -10,16 +10,11 @@ const {
   '../controllers/produtoController'
 );
 
-router.get(
-  '/produtos',
-  listarProdutos
-);
+const autenticar = require("../middlewares/autenticar");
 
-router.post(
-  '/produtos',
-  criarProduto  
-);
+router.post("/produtos", autenticar, criarProduto);
 
-module.exports = router;
-            
+router.get("/produtos", listarProdutos);
+
+module.exports = router;            
             
