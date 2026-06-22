@@ -1,13 +1,13 @@
-const express = require("express");
-
+const express = require('express');
 const router = express.Router();
 
-const {
-  registrar,
-  login,
-} = require("../controllers/authController");
+const authController = require('../controllers/authController');
+const notificacaoMiddleware = require('../middlewares/notificacaoMiddleware');
 
-router.post("/registrar", registrar);
-router.post("/login", login);
+router.post(
+  '/register',
+  notificacaoMiddleware,
+  authController.register
+);
 
 module.exports = router;
