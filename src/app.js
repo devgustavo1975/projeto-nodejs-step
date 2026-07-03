@@ -1,6 +1,7 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const path = require("path");
 
 const usuarioRoutes = require("./routes/usuarioRoutes");
 const produtoRoutes = require("./routes/produtoRoutes");
@@ -9,6 +10,7 @@ const authRoutes = require("./routes/authRoutes");
 const streamRoutes = require("./routes/streamRoutes");
 const cepRoutes = require("./routes/cepRoutes");
 const sessaoRoutes = require("./routes/sessaoRoutes");
+const produtoPgRoutes = require("./routes/produtoPgRoutes");
 
 const loggerMiddleware = require("./middlewares/loggerMiddleware");
 
@@ -18,18 +20,22 @@ app.use(loggerMiddleware);
 
 app.use(cookieParser());
 
-app.use(session({
-  secret: process.env.SESSION_SECRET || "segredo-super-seguro",
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: 30 * 60 * 1000,
-    httpOnly: true,
-  },
-}));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "segredo-super-seguro",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 30 * 60 * 1000,
+      httpOnly: true,
+    },
+  }),
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(express.static(path.join(__dirname, "../public")));
 
 app.use(authRoutes);
 app.use(produtoRoutes);
@@ -38,6 +44,8 @@ app.use(arquivoRoutes);
 app.use(streamRoutes);
 app.use(cepRoutes);
 app.use(sessaoRoutes);
+app.use(produtoPgRoutes);
 
 module.exports = app;
+            
             
