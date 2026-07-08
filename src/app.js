@@ -11,8 +11,8 @@ const streamRoutes = require("./routes/streamRoutes");
 const cepRoutes = require("./routes/cepRoutes");
 const sessaoRoutes = require("./routes/sessaoRoutes");
 const produtoPgRoutes = require("./routes/produtoPgRoutes");
-
 const loggerMiddleware = require("./middlewares/loggerMiddleware");
+const calculoRoutes = require("./routes/calculoRoutes");
 
 const app = express();
 
@@ -37,6 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "../public")));
 
+app.use(calculoRoutes);
 app.use(authRoutes);
 app.use(produtoRoutes);
 app.use(usuarioRoutes);
@@ -47,5 +48,6 @@ app.use(sessaoRoutes);
 app.use(produtoPgRoutes);
 
 module.exports = app;
+
             
             
